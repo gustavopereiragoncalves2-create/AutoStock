@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101c31">
+  <meta name="description" content="AutoStock: dashboard demonstrativo de estoque do Óleo 556 Radnaq 500 ml.">
+  <title>AutoStock | Óleo 556 Radnaq</title>
+  <style>
+    :root {
+      --navy:#101c31;--navy-soft:#1b2b46;--blue:#315cf5;--blue-soft:#eaf0ff;
+      --bg:#f5f7fb;--surface:#fff;--ink:#1b2a40;--muted:#718099;--line:#e4e9f1;
+      --green:#0e906d;--green-soft:#e2f7ee;--red:#d74456;--red-soft:#fff0f1;
+      --amber:#bc7013;--amber-soft:#fff6e7;--shadow:0 15px 35px rgba(16,28,49,.045)
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    button:disabled{cursor:not-allowed;opacity:.5}
+    button:focus-visible,input:focus-visible{outline:3px solid #92aaff;outline-offset:2px}
+    .app{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr)}
+    aside{background:var(--navy);color:#fff;display:flex;flex-direction:column;padding:28px 18px 22px;min-height:100vh}
+    .brand{display:flex;align-items:center;gap:11px;padding:4px 10px 31px}
+    .brand-mark{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:linear-gradient(145deg,#5480ff,#2446dc);font-size:25px;font-weight:900}
+    .brand strong{display:block;font-size:21px;letter-spacing:-.7px;line-height:1.2}
+    .brand small{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#a4b6d0}
+    .nav-caption{color:#8197b9;font-size:10px;text-transform:uppercase;letter-spacing:.16em;font-weight:800;padding:4px 14px 10px}
+    .nav-item{background:#2a4269;border:1px solid #335077;padding:13px 14px;border-radius:12px;font-weight:750;display:flex;gap:12px;align-items:center}
+    .nav-item .symbol{font-size:18px}
+    .aside-end{margin-top:auto}
+    .aside-note{border:1px solid #354b69;border-radius:14px;background:var(--navy-soft);padding:16px}
+    .aside-note strong{font-size:13px}.aside-note p{color:#b6c7df;font-size:12px;line-height:1.65;margin:7px 0 0}
+    .aside-bottom{font-size:11px;color:#8197b9;text-align:center;margin-top:18px}
+    main{width:min(100%,1450px);padding:36px clamp(18px,3.6vw,54px) 32px;margin:0 auto;min-width:0}
+    .header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:26px}
+    .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:11px;color:var(--blue);margin-bottom:6px}
+    h1{font-size:clamp(27px,3vw,37px);letter-spacing:-1.2px;line-height:1.2;margin:0;color:var(--navy)}
+    .subtitle{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.6}
+    .demo-pill{border-radius:99px;border:1px solid #c7d6ff;background:#eaf0ff;color:#2554b8;padding:9px 13px;white-space:nowrap;font-size:12px;font-weight:800}
+    .demo-pill::before{content:"";display:inline-block;width:7px;height:7px;border-radius:100%;background:#346df2;margin-right:7px;vertical-align:1px}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:20px}
+    .stat{background:white;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:16px;padding:19px 20px 18px;min-height:141px}
+    .stat-top{display:flex;justify-content:space-between;gap:6px;align-items:center;color:#6d7e94;font-size:12px;font-weight:750}
+    .stat-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:#edf2ff;color:var(--blue);font-size:18px}
+    .stat-icon.green{background:var(--green-soft);color:var(--green)}
+    .stat-icon.red{background:var(--red-soft);color:var(--red)}
+    .stat-num{font-size:34px;line-height:1.15;font-weight:850;letter-spacing:-1.5px;margin-top:13px;font-variant-numeric:tabular-nums}
+    .stat-desc{font-size:11px;color:var(--muted);margin-top:6px}
+    .grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(310px,1fr);gap:20px;align-items:start}
+    .panel{background:white;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:23px;min-width:0}
+    .stack{display:grid;gap:20px;align-content:start}
+    .panel-heading{display:flex;justify-content:space-between;gap:12px;align-items:start;margin-bottom:21px}
+    .panel-heading h2{font-size:18px;letter-spacing:-.5px;line-height:1.3;margin:0}
+    .panel-heading p{font-size:12px;color:var(--muted);line-height:1.5;margin:6px 0 0}
+    .product-main{display:block;border:1px solid #e7edfa;background:linear-gradient(105deg,#f5f8ff 10%,#fff 95%);padding:28px;border-radius:16px;min-height:172px}
+    .product-overline{color:#6580b8;text-transform:uppercase;letter-spacing:.13em;font-size:10px;font-weight:850;margin:0 0 10px}
+    .product-name{font-size:clamp(23px,2.4vw,30px);letter-spacing:-1px;font-weight:850;line-height:1.22;color:#18283f;margin:0}
+    .product-desc{font-size:14px;color:#566a88;margin:11px 0 17px}
+    .tags{display:flex;gap:7px;flex-wrap:wrap}
+    .tag{font-size:11px;border:1px solid #d6e2fa;background:white;padding:5px 9px;border-radius:99px;font-weight:750;color:#51668b}
+    .inventory{margin-top:24px}
+    .inv-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .inv-top h3{margin:0;font-size:15px;letter-spacing:-.2px}
+    .status{border-radius:99px;font-size:12px;font-weight:850;padding:7px 12px;white-space:nowrap}
+    .status.ok{background:var(--green-soft);color:var(--green)}
+    .status.low{background:var(--amber-soft);color:var(--amber)}
+    .status.zero{background:var(--red-soft);color:var(--red)}
+    .stock-line{display:flex;align-items:baseline;gap:8px;margin-top:13px}
+    .stock-line strong{font-size:49px;font-weight:900;letter-spacing:-2px;line-height:1;font-variant-numeric:tabular-nums}
+    .stock-line span{color:var(--muted);font-size:15px;font-weight:700}
+    .meter{height:13px;background:#eaf0f7;border-radius:99px;margin-top:17px;overflow:visible;position:relative}
+    .meter-fill{height:100%;border-radius:99px;background:#15a37a;transition:width .3s ease}
+    .meter-fill.low{background:#e6a03a}.meter-fill.zero{background:var(--red)}
+    .meter-threshold{position:absolute;top:-5px;height:23px;width:2px;background:#55657c;box-shadow:0 0 0 2px #fff;transform:translateX(-50%)}
+    .meter-legend{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;font-size:11px;color:#7b8aa1}
+    .alert-message{background:#e9f8f1;color:#117855;border-radius:11px;padding:13px 14px;margin-top:18px;font-size:12px;font-weight:650;line-height:1.6}
+    .alert-message.low{background:var(--amber-soft);color:#995b0e}
+    .alert-message.zero{background:var(--red-soft);color:#b42f42}
+    .form-group{display:grid;gap:7px;margin-bottom:14px}
+    label{font-weight:750;color:#4e5f76;font-size:12px}
+    input[type=number]{background:#fff;border:1px solid #d9e2ed;color:#20314a;padding:12px 13px;min-height:46px;border-radius:10px;width:100%;font-size:15px;font-weight:700}
+    .action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .btn{border:0;border-radius:10px;min-height:43px;padding:10px 14px;font-size:13px;font-weight:800;transition:transform .15s,background .15s}
+    .btn:hover:not(:disabled){transform:translateY(-1px)}
+    .btn.in{background:#0c916d;color:#fff}.btn.out{background:var(--navy);color:#fff}
+    .btn.ghost{background:#f0f3f8;color:#3d506a}.btn.blue{background:var(--blue);color:#fff}
+    .short-help{margin:13px 0 0;font-size:12px;line-height:1.5;color:var(--muted)}
+    .min-editor{border-top:1px solid var(--line);margin-top:23px;padding-top:19px}
+    .min-inline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;margin-top:8px}
+    .history{margin-top:20px}
+    .history-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+    .history-top h2{font-size:18px;margin:0;letter-spacing:-.4px}
+    .table-scroll{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;min-width:500px;text-align:left}
+    th{font-size:11px;color:#7f8ca0;text-transform:uppercase;letter-spacing:.07em;background:#f8fafc;padding:12px;font-weight:850}
+    td{padding:13px 12px;font-size:12px;border-bottom:1px solid #edf1f6}
+    tbody tr:last-child td{border-bottom:0}
+    .movement-type{font-weight:800}.movement-type.in{color:var(--green)}.movement-type.out{color:var(--red)}
+    .amount{font-weight:850;font-variant-numeric:tabular-nums}
+    .empty{text-align:center;color:var(--muted);padding:24px;font-size:13px}
+    .footer{font-size:12px;line-height:1.7;color:var(--muted);margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+    .footer strong{color:#536582}
+    .toast{position:fixed;right:22px;bottom:22px;padding:14px 18px;border-radius:12px;background:#19283e;color:#fff;box-shadow:0 14px 30px #14223730;font-size:13px;font-weight:650;z-index:10;max-width:calc(100vw - 44px)}
+    [hidden]{display:none!important}
+    @media(max-width:1120px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}.stack{grid-template-columns:1fr}}
+    @media(max-width:730px){.app{display:block}aside{min-height:0;flex-direction:row;align-items:center;justify-content:space-between;padding:13px 18px}.brand{padding:0}.brand-mark{width:35px;height:35px;font-size:20px;border-radius:10px}.brand strong{font-size:19px}.brand small{font-size:9px}.nav-caption,.nav-item,.aside-end{display:none}main{padding:22px 15px 32px}.header{align-items:start}.demo-pill{font-size:10px;padding:8px 9px}.stat{min-height:121px;padding:15px}.stat-top{font-size:11px}.stat-icon{width:29px;height:29px;font-size:15px}.stat-num{font-size:30px}.panel{padding:17px}.product-main{padding:22px;min-height:0}.product-name{font-size:23px}.stock-line strong{font-size:43px}}
+    @media(max-width:400px){.header{display:block}.demo-pill{display:inline-block;margin-top:12px}.stat-top{align-items:flex-start}.stat-icon{flex-shrink:0}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.meter-fill{transition:none}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside aria-label="Menu do AutoStock">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">A</div><div><strong>AutoStock</strong><small>Controle de estoque</small></div></div>
+    <div class="nav-caption">Navegação</div>
+    <div class="nav-item"><span class="symbol" aria-hidden="true">▦</span> Painel principal</div>
+    <div class="aside-end"><div class="aside-note"><strong>🎓 Projeto acadêmico</strong><p>Controle demonstrativo de um único produto. Uma integração com o ESP32 poderá ser feita futuramente.</p></div><div class="aside-bottom">AutoStock • Versão 556</div></div>
+  </aside>
+
+  <main>
+    <header class="header">
+      <div><div class="eyebrow">Painel de controle • 1 produto</div><h1>Controle de estoque</h1><p class="subtitle">Acompanhe as unidades e registre entradas e saídas do Óleo 556 Radnaq.</p></div>
+      <span class="demo-pill">Modo demonstração</span>
+    </header>
+
+    <section class="stats" aria-label="Indicadores do estoque">
+      <div class="stat"><div class="stat-top">Quantidade disponível <span class="stat-icon" aria-hidden="true">▤</span></div><div class="stat-num" id="currentQty">8</div><div class="stat-desc">Frascos de 500 ml</div></div>
+      <div class="stat"><div class="stat-top">Estoque mínimo <span class="stat-icon" aria-hidden="true">◎</span></div><div class="stat-num" id="minQty">5</div><div class="stat-desc">Limite para alerta</div></div>
+      <div class="stat"><div class="stat-top">Total de entradas <span class="stat-icon green" aria-hidden="true">↙</span></div><div class="stat-num" id="totalIn">0</div><div class="stat-desc">Unidades adicionadas</div></div>
+      <div class="stat"><div class="stat-top">Total de saídas <span class="stat-icon red" aria-hidden="true">↗</span></div><div class="stat-num" id="totalOut">0</div><div class="stat-desc">Unidades retiradas</div></div>
+    </section>
+
+    <div class="grid">
+      <section class="panel" aria-label="Produto monitorado">
+        <div class="panel-heading"><div><h2>Produto monitorado</h2><p>Apenas um produto cadastrado neste protótipo.</p></div></div>
+        <div class="product-main">
+          <p class="product-overline">Produto único • Radnaq</p>
+          <h3 class="product-name">Óleo 556 Radnaq</h3>
+          <p class="product-desc">Frasco de 500 ml • Controle individual de estoque</p>
+          <div class="tags"><span class="tag">Marca: Radnaq</span><span class="tag">Produto: Óleo 556</span><span class="tag">500 ml</span></div>
+        </div>
+        <div class="inventory">
+          <div class="inv-top"><h3>Situação do estoque</h3><span id="status" class="status ok">Estoque normal</span></div>
+          <div class="stock-line"><strong id="mainQty">8</strong><span>unidades disponíveis</span></div>
+          <div class="meter" role="progressbar" id="stockMeter" aria-label="Quantidade em relação à meta de segurança" aria-valuemin="0" aria-valuemax="10" aria-valuenow="8"><div class="meter-fill" id="meterFill" style="width:80%"></div><div class="meter-threshold" id="meterThreshold" style="left:50%"></div></div>
+          <div class="meter-legend"><span id="minLabel">Estoque mínimo: 5 un.</span><span id="targetLabel">Meta de segurança: 10 un.</span></div>
+          <div class="alert-message" id="stockMessage" role="status">✓ Estoque acima do mínimo definido. Nenhuma reposição necessária no momento.</div>
+        </div>
+      </section>
+
+      <div class="stack">
+        <section class="panel" aria-label="Movimentar estoque">
+          <div class="panel-heading"><div><h2>Movimentar estoque</h2><p>Escolha quantas unidades deseja adicionar ou retirar.</p></div></div>
+          <form id="movementForm">
+            <div class="form-group"><label for="movementQty">Quantidade de frascos</label><input type="number" min="1" max="999999" step="1" id="movementQty" value="1" required inputmode="numeric"></div>
+            <div class="action-grid"><button class="btn in" id="entryBtn" type="button">＋ Registrar entrada</button><button class="btn out" id="exitBtn" type="button">− Registrar saída</button></div>
+            <p class="short-help">Exemplo: selecione 3 e clique em <strong>Registrar saída</strong> para retirar 3 frascos do estoque.</p>
+          </form>
+          <form id="minimumForm" class="min-editor">
+            <label for="minimumInput">Alterar quantidade mínima</label>
+            <div class="min-inline"><input type="number" id="minimumInput" min="0" max="999999" step="1" value="5" required inputmode="numeric"><button type="submit" class="btn blue">Salvar mínimo</button></div>
+          </form>
+        </section>
+        <section class="panel" aria-label="Informações do AutoStock">
+          <div class="panel-heading" style="margin-bottom:0"><div><h2>Como funciona?</h2><p>O Dashboard registra a quantidade em estoque e avisa quando ela chega ao limite mínimo. As movimentações são salvas neste navegador.</p></div></div>
+        </section>
+      </div>
+    </div>
+
+    <section class="panel history" aria-label="Histórico de movimentações">
+      <div class="history-top"><div><h2>Histórico de movimentações</h2><p class="short-help" style="margin-top:4px">Entradas e saídas do Óleo 556</p></div><span class="tag" id="movementsCount">0 registros</span></div>
+      <div class="table-scroll"><table><thead><tr><th>Data e hora</th><th>Tipo</th><th>Quantidade</th><th>Saldo após</th></tr></thead><tbody id="movementRows"><tr><td class="empty" colspan="4">Nenhuma movimentação registrada. Faça uma entrada ou saída para começar.</td></tr></tbody></table></div>
+    </section>
+
+    <footer class="footer"><div><strong>AutoStock • Projeto acadêmico</strong> — Dados armazenados somente neste navegador; sem conexão com ESP32 ou banco online.</div><button type="button" class="btn ghost" id="resetBtn">↻ Reiniciar demonstração</button></footer>
+  </main>
+</div>
+<div class="toast" role="status" aria-live="polite" id="toast" hidden></div>
+<script>
+  // CONFIGURAÇÃO INICIAL DO ÚNICO PRODUTO
+  // Você pode editar os valores 8 e 5 abaixo antes de publicar.
+  const INITIAL_STOCK = 8;
+  const INITIAL_MINIMUM = 5;
+  const STORAGE_KEY = 'autostock-radnaq-556-500ml-v1';
+  const MAX_VALUE = 999999;
+  const $ = id => document.getElementById(id);
+  const formatNumber = new Intl.NumberFormat('pt-BR');
+  const dateFormatter = new Intl.DateTimeFormat('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+  function emptyData(){return {quantity:INITIAL_STOCK,minimum:INITIAL_MINIMUM,movements:[]};}
+  function validNumber(value){return Number.isSafeInteger(value)&&value>=0&&value<=MAX_VALUE;}
+  function loadData(){
+    try {
+      const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if(stored&&validNumber(stored.quantity)&&validNumber(stored.minimum)&&Array.isArray(stored.movements)){
+        return {quantity:stored.quantity,minimum:stored.minimum,movements:stored.movements.filter(m=>m&&['in','out'].includes(m.type)&&validNumber(m.qty)&&validNumber(m.balance)&&typeof m.date==='string').slice(0,500)};
+      }
+    }catch(error){console.warn('Dados locais indisponíveis.',error);}
+    return emptyData();
+  }
+  let data=loadData();
+  function saveData(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}catch(error){showToast('Aviso: este navegador não permitiu salvar os dados.');}}
+  function showToast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>{$('toast').hidden=true;},2900);}
+  function getStatus(){if(data.quantity===0)return 'zero';if(data.quantity<=data.minimum)return 'low';return 'ok';}
+  function render(){
+    const status=getStatus();
+    $('currentQty').textContent=formatNumber.format(data.quantity);
+    $('mainQty').textContent=formatNumber.format(data.quantity);
+    $('minQty').textContent=formatNumber.format(data.minimum);
+    $('totalIn').textContent=formatNumber.format(data.movements.filter(m=>m.type==='in').reduce((s,m)=>s+m.qty,0));
+    $('totalOut').textContent=formatNumber.format(data.movements.filter(m=>m.type==='out').reduce((s,m)=>s+m.qty,0));
+    $('minimumInput').value=data.minimum;
+
+    const statusEl=$('status');statusEl.className='status '+status;
+    statusEl.textContent=status==='zero'?'Estoque zerado':status==='low'?'Estoque baixo':'Estoque normal';
+    const message=$('stockMessage');message.className='alert-message '+(status==='ok'?'':status);
+    message.textContent=status==='zero'?'⚠ Sem unidades em estoque. É necessário repor o produto.':status==='low'?'⚠ Atenção: a quantidade chegou ao estoque mínimo ou ficou abaixo dele.':'✓ Estoque acima do mínimo definido. Nenhuma reposição necessária no momento.';
+
+    const target=Math.max(data.minimum*2,10);
+    const max=Math.max(target,data.quantity);
+    $('meterFill').className='meter-fill '+(status==='ok'?'':status);
+    $('meterFill').style.width=(data.quantity/max*100)+'%';
+    $('meterThreshold').style.left=(data.minimum/max*100)+'%';
+    $('stockMeter').setAttribute('aria-valuemax',String(max));
+    $('stockMeter').setAttribute('aria-valuenow',String(data.quantity));
+    $('minLabel').textContent='Estoque mínimo: '+formatNumber.format(data.minimum)+' un.';
+    $('targetLabel').textContent='Meta de segurança: '+formatNumber.format(target)+' un.';
+
+    $('movementsCount').textContent=data.movements.length+' '+(data.movements.length===1?'registro':'registros');
+    renderMovements();
+  }
+  function renderMovements(){
+    const tbody=$('movementRows');tbody.replaceChildren();
+    if(!data.movements.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=4;td.className='empty';td.textContent='Nenhuma movimentação registrada. Faça uma entrada ou saída para começar.';tr.append(td);tbody.append(tr);return;}
+    data.movements.slice(0,10).forEach(m=>{
+      const tr=document.createElement('tr');
+      const tdDate=document.createElement('td');
+      const date=new Date(m.date);tdDate.textContent=Number.isNaN(date.getTime())?'Data indisponível':dateFormatter.format(date);
+      const tdType=document.createElement('td');const span=document.createElement('span');span.className='movement-type '+m.type;span.textContent=m.type==='in'?'↙ Entrada':'↗ Saída';tdType.append(span);
+      const tdQty=document.createElement('td');tdQty.className='amount';tdQty.textContent=(m.type==='in'?'+':'−')+formatNumber.format(m.qty);
+      const tdBalance=document.createElement('td');tdBalance.textContent=formatNumber.format(m.balance)+' un.';
+      tr.append(tdDate,tdType,tdQty,tdBalance);tbody.append(tr);
+    });
+  }
+  function getMovementQuantity(){
+    const input=$('movementQty');const value=Number(input.value);
+    if(!input.value.trim()||!Number.isSafeInteger(value)||value<1||value>MAX_VALUE){showToast('Digite uma quantidade inteira entre 1 e 999.999.');input.focus();return null;}
+    return value;
+  }
+  function movement(type){
+    const qty=getMovementQuantity();if(qty===null)return;
+    if(type==='out'&&qty>data.quantity){showToast('Não há unidades suficientes para essa saída.');return;}
+    if(type==='in'&&data.quantity+qty>MAX_VALUE){showToast('Quantidade máxima de demonstração excedida.');return;}
+    data.quantity+=type==='in'?qty:-qty;
+    data.movements.unshift({type,qty,balance:data.quantity,date:new Date().toISOString()});
+    data.movements=data.movements.slice(0,500);
+    saveData();render();showToast(type==='in'?'Entrada registrada com sucesso!':'Saída registrada com sucesso!');
+  }
+  $('entryBtn').addEventListener('click',()=>movement('in'));
+  $('exitBtn').addEventListener('click',()=>movement('out'));
+  $('movementForm').addEventListener('submit',event=>{event.preventDefault();movement('in');});
+  $('minimumForm').addEventListener('submit',event=>{
+    event.preventDefault();const input=$('minimumInput');const minimum=Number(input.value);
+    if(!input.value.trim()||!validNumber(minimum)){showToast('O estoque mínimo deve ser um número inteiro entre 0 e 999.999.');input.focus();return;}
+    data.minimum=minimum;saveData();render();showToast('Estoque mínimo atualizado!');
+  });
+  $('resetBtn').addEventListener('click',()=>{
+    if(!confirm('Apagar as movimentações e voltar para 8 unidades com mínimo de 5?'))return;
+    data=emptyData();saveData();$('movementQty').value=1;render();showToast('Demonstração reiniciada.');
+  });
+  render();
+</script>
+</body>
+</html>
