@@ -3,274 +3,205 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101c31">
-  <meta name="description" content="AutoStock: dashboard demonstrativo de estoque do Óleo 556 Radnaq 500 ml.">
-  <title>AutoStock | Óleo 556 Radnaq</title>
+  <meta name="theme-color" content="#0e1b2d">
+  <meta name="description" content="AutoStock — sistema de controle de estoque do Óleo 556 Radnaq 500 ml.">
+  <title>AutoStock — Dashboard Óleo 556 Radnaq</title>
   <style>
-    :root {
-      --navy:#101c31;--navy-soft:#1b2b46;--blue:#315cf5;--blue-soft:#eaf0ff;
-      --bg:#f5f7fb;--surface:#fff;--ink:#1b2a40;--muted:#718099;--line:#e4e9f1;
-      --green:#0e906d;--green-soft:#e2f7ee;--red:#d74456;--red-soft:#fff0f1;
-      --amber:#bc7013;--amber-soft:#fff6e7;--shadow:0 15px 35px rgba(16,28,49,.045)
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-    button,input{font:inherit}
-    button{cursor:pointer}
-    button:disabled{cursor:not-allowed;opacity:.5}
-    button:focus-visible,input:focus-visible{outline:3px solid #92aaff;outline-offset:2px}
-    .app{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr)}
-    aside{background:var(--navy);color:#fff;display:flex;flex-direction:column;padding:28px 18px 22px;min-height:100vh}
-    .brand{display:flex;align-items:center;gap:11px;padding:4px 10px 31px}
-    .brand-mark{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:linear-gradient(145deg,#5480ff,#2446dc);font-size:25px;font-weight:900}
-    .brand strong{display:block;font-size:21px;letter-spacing:-.7px;line-height:1.2}
-    .brand small{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#a4b6d0}
-    .nav-caption{color:#8197b9;font-size:10px;text-transform:uppercase;letter-spacing:.16em;font-weight:800;padding:4px 14px 10px}
-    .nav-item{background:#2a4269;border:1px solid #335077;padding:13px 14px;border-radius:12px;font-weight:750;display:flex;gap:12px;align-items:center}
-    .nav-item .symbol{font-size:18px}
-    .aside-end{margin-top:auto}
-    .aside-note{border:1px solid #354b69;border-radius:14px;background:var(--navy-soft);padding:16px}
-    .aside-note strong{font-size:13px}.aside-note p{color:#b6c7df;font-size:12px;line-height:1.65;margin:7px 0 0}
-    .aside-bottom{font-size:11px;color:#8197b9;text-align:center;margin-top:18px}
-    main{width:min(100%,1450px);padding:36px clamp(18px,3.6vw,54px) 32px;margin:0 auto;min-width:0}
-    .header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:26px}
-    .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:11px;color:var(--blue);margin-bottom:6px}
-    h1{font-size:clamp(27px,3vw,37px);letter-spacing:-1.2px;line-height:1.2;margin:0;color:var(--navy)}
-    .subtitle{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.6}
-    .demo-pill{border-radius:99px;border:1px solid #c7d6ff;background:#eaf0ff;color:#2554b8;padding:9px 13px;white-space:nowrap;font-size:12px;font-weight:800}
-    .demo-pill::before{content:"";display:inline-block;width:7px;height:7px;border-radius:100%;background:#346df2;margin-right:7px;vertical-align:1px}
-    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:20px}
-    .stat{background:white;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:16px;padding:19px 20px 18px;min-height:141px}
-    .stat-top{display:flex;justify-content:space-between;gap:6px;align-items:center;color:#6d7e94;font-size:12px;font-weight:750}
-    .stat-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:#edf2ff;color:var(--blue);font-size:18px}
-    .stat-icon.green{background:var(--green-soft);color:var(--green)}
-    .stat-icon.red{background:var(--red-soft);color:var(--red)}
-    .stat-num{font-size:34px;line-height:1.15;font-weight:850;letter-spacing:-1.5px;margin-top:13px;font-variant-numeric:tabular-nums}
-    .stat-desc{font-size:11px;color:var(--muted);margin-top:6px}
-    .grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(310px,1fr);gap:20px;align-items:start}
-    .panel{background:white;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:23px;min-width:0}
-    .stack{display:grid;gap:20px;align-content:start}
-    .panel-heading{display:flex;justify-content:space-between;gap:12px;align-items:start;margin-bottom:21px}
-    .panel-heading h2{font-size:18px;letter-spacing:-.5px;line-height:1.3;margin:0}
-    .panel-heading p{font-size:12px;color:var(--muted);line-height:1.5;margin:6px 0 0}
-    .product-main{display:block;border:1px solid #e7edfa;background:linear-gradient(105deg,#f5f8ff 10%,#fff 95%);padding:28px;border-radius:16px;min-height:172px}
-    .product-overline{color:#6580b8;text-transform:uppercase;letter-spacing:.13em;font-size:10px;font-weight:850;margin:0 0 10px}
-    .product-name{font-size:clamp(23px,2.4vw,30px);letter-spacing:-1px;font-weight:850;line-height:1.22;color:#18283f;margin:0}
-    .product-desc{font-size:14px;color:#566a88;margin:11px 0 17px}
-    .tags{display:flex;gap:7px;flex-wrap:wrap}
-    .tag{font-size:11px;border:1px solid #d6e2fa;background:white;padding:5px 9px;border-radius:99px;font-weight:750;color:#51668b}
-    .inventory{margin-top:24px}
-    .inv-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
-    .inv-top h3{margin:0;font-size:15px;letter-spacing:-.2px}
-    .status{border-radius:99px;font-size:12px;font-weight:850;padding:7px 12px;white-space:nowrap}
-    .status.ok{background:var(--green-soft);color:var(--green)}
-    .status.low{background:var(--amber-soft);color:var(--amber)}
-    .status.zero{background:var(--red-soft);color:var(--red)}
-    .stock-line{display:flex;align-items:baseline;gap:8px;margin-top:13px}
-    .stock-line strong{font-size:49px;font-weight:900;letter-spacing:-2px;line-height:1;font-variant-numeric:tabular-nums}
-    .stock-line span{color:var(--muted);font-size:15px;font-weight:700}
-    .meter{height:13px;background:#eaf0f7;border-radius:99px;margin-top:17px;overflow:visible;position:relative}
-    .meter-fill{height:100%;border-radius:99px;background:#15a37a;transition:width .3s ease}
-    .meter-fill.low{background:#e6a03a}.meter-fill.zero{background:var(--red)}
-    .meter-threshold{position:absolute;top:-5px;height:23px;width:2px;background:#55657c;box-shadow:0 0 0 2px #fff;transform:translateX(-50%)}
-    .meter-legend{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;font-size:11px;color:#7b8aa1}
-    .alert-message{background:#e9f8f1;color:#117855;border-radius:11px;padding:13px 14px;margin-top:18px;font-size:12px;font-weight:650;line-height:1.6}
-    .alert-message.low{background:var(--amber-soft);color:#995b0e}
-    .alert-message.zero{background:var(--red-soft);color:#b42f42}
-    .form-group{display:grid;gap:7px;margin-bottom:14px}
-    label{font-weight:750;color:#4e5f76;font-size:12px}
-    input[type=number]{background:#fff;border:1px solid #d9e2ed;color:#20314a;padding:12px 13px;min-height:46px;border-radius:10px;width:100%;font-size:15px;font-weight:700}
-    .action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .btn{border:0;border-radius:10px;min-height:43px;padding:10px 14px;font-size:13px;font-weight:800;transition:transform .15s,background .15s}
-    .btn:hover:not(:disabled){transform:translateY(-1px)}
-    .btn.in{background:#0c916d;color:#fff}.btn.out{background:var(--navy);color:#fff}
-    .btn.ghost{background:#f0f3f8;color:#3d506a}.btn.blue{background:var(--blue);color:#fff}
-    .short-help{margin:13px 0 0;font-size:12px;line-height:1.5;color:var(--muted)}
-    .min-editor{border-top:1px solid var(--line);margin-top:23px;padding-top:19px}
-    .min-inline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;margin-top:8px}
-    .history{margin-top:20px}
-    .history-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
-    .history-top h2{font-size:18px;margin:0;letter-spacing:-.4px}
-    .table-scroll{overflow-x:auto}
-    table{width:100%;border-collapse:collapse;min-width:500px;text-align:left}
-    th{font-size:11px;color:#7f8ca0;text-transform:uppercase;letter-spacing:.07em;background:#f8fafc;padding:12px;font-weight:850}
-    td{padding:13px 12px;font-size:12px;border-bottom:1px solid #edf1f6}
-    tbody tr:last-child td{border-bottom:0}
-    .movement-type{font-weight:800}.movement-type.in{color:var(--green)}.movement-type.out{color:var(--red)}
-    .amount{font-weight:850;font-variant-numeric:tabular-nums}
-    .empty{text-align:center;color:var(--muted);padding:24px;font-size:13px}
-    .footer{font-size:12px;line-height:1.7;color:var(--muted);margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
-    .footer strong{color:#536582}
-    .toast{position:fixed;right:22px;bottom:22px;padding:14px 18px;border-radius:12px;background:#19283e;color:#fff;box-shadow:0 14px 30px #14223730;font-size:13px;font-weight:650;z-index:10;max-width:calc(100vw - 44px)}
-    [hidden]{display:none!important}
-    @media(max-width:1120px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}.stack{grid-template-columns:1fr}}
-    @media(max-width:730px){.app{display:block}aside{min-height:0;flex-direction:row;align-items:center;justify-content:space-between;padding:13px 18px}.brand{padding:0}.brand-mark{width:35px;height:35px;font-size:20px;border-radius:10px}.brand strong{font-size:19px}.brand small{font-size:9px}.nav-caption,.nav-item,.aside-end{display:none}main{padding:22px 15px 32px}.header{align-items:start}.demo-pill{font-size:10px;padding:8px 9px}.stat{min-height:121px;padding:15px}.stat-top{font-size:11px}.stat-icon{width:29px;height:29px;font-size:15px}.stat-num{font-size:30px}.panel{padding:17px}.product-main{padding:22px;min-height:0}.product-name{font-size:23px}.stock-line strong{font-size:43px}}
-    @media(max-width:400px){.header{display:block}.demo-pill{display:inline-block;margin-top:12px}.stat-top{align-items:flex-start}.stat-icon{flex-shrink:0}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.meter-fill{transition:none}}
+    :root{--navy:#101d31;--navy2:#172a45;--blue:#435ee9;--blue-light:#ecf0ff;--teal:#069d84;--teal-light:#e6f7f2;--red:#d94e61;--red-light:#fff0f2;--amber:#ba780c;--amber-light:#fff7e8;--text:#1c2b42;--muted:#7b879b;--line:#e6ebf3;--bg:#f5f7fb;--card:#fff;--radius:17px;--shadow:0 8px 28px rgba(25,42,75,.035)}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #a0b6ff;outline-offset:3px}a{color:inherit;text-decoration:none} .app{display:grid;grid-template-columns:234px minmax(0,1fr);min-height:100vh}svg{display:block}svg.icon{width:19px;height:19px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+    .sidebar{background:var(--navy);padding:27px 16px 20px;display:flex;flex-direction:column;color:#d7e1f0;position:sticky;top:0;height:100vh}.brand{display:flex;align-items:center;gap:10px;padding:1px 9px 36px}.brandmark{width:42px;height:42px;background:linear-gradient(135deg,#587bff,#3553d5);border-radius:12px;display:grid;place-items:center;box-shadow:0 6px 16px #0b14294d}.brandmark svg{width:24px;height:24px;color:#fff}.brand b{font-size:20px;color:#fff;letter-spacing:-.6px;line-height:1.1}.brand small{display:block;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:#8499b6;margin-top:4px}.side-label{font-size:10px;color:#7d92af;font-weight:800;letter-spacing:1.7px;text-transform:uppercase;padding:0 12px;margin-bottom:12px}.side-link{display:flex;gap:12px;align-items:center;padding:12px 12px;color:#a7b8ce;border-radius:10px;margin-bottom:5px;font-weight:650;font-size:13px}.side-link.active{color:#fff;background:#273e66}.side-link:hover{color:#fff;background:#203552}.sidebar-bottom{margin-top:auto}.side-panel{border:1px solid #29405d;background:#172b45;border-radius:13px;padding:15px}.side-panel .little{font-size:10px;color:#8aa3c6;text-transform:uppercase;letter-spacing:1px;font-weight:800}.side-panel strong{display:block;color:#fff;font-size:13px;margin-top:7px}.side-panel p{font-size:11px;color:#9eb1ca;margin:7px 0 0;line-height:1.6}.sidebar-meta{font-size:10px;text-align:center;color:#7e94b2;margin:18px 0 0}
+    .content{min-width:0;padding:30px clamp(18px,2.65vw,48px) 25px;max-width:1650px;width:100%;margin:0 auto}.breadcrumb{color:#96a0b0;font-size:12px;font-weight:680;margin-bottom:15px}.breadcrumb strong{color:#51627c}.heading{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:24px}.eyebrow{color:var(--blue);font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:1.6px;margin-bottom:6px}h1{font-size:clamp(25px,2.5vw,34px);line-height:1.2;letter-spacing:-1.2px;margin:0;color:#12223b}h2{font-size:16px;letter-spacing:-.36px;line-height:1.3;margin:0}h3{font-size:14px;margin:0}.subtitle{color:var(--muted);font-size:13px;margin:8px 0 0}.head-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}.pill{font-size:11px;font-weight:750;border-radius:100px;padding:7px 11px;white-space:nowrap}.pill.demo{color:#3c5fc4;background:#eaf0ff;border:1px solid #d4dfff}.pill.demo:before{content:"";width:6px;height:6px;border-radius:50%;display:inline-block;background:#4f74ed;margin:0 7px 1px 0}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;padding:10px 13px;border-radius:10px;font-size:12px;font-weight:800;min-height:40px;white-space:nowrap;transition:transform .14s,background .14s}.btn:hover:not(:disabled){transform:translateY(-1px)}.btn svg{width:15px;height:15px}.btn-outline{background:#fff;border-color:#dbe2ee;color:#40536e}.btn-primary{background:#435ee9;color:#fff}.btn-in{background:#079879;color:#fff}.btn-out{background:#253e67;color:#fff}.btn-quiet{border-color:#e4eaf2;color:#53667f;background:#f6f8fc}.btn.small{padding:7px 10px;min-height:33px}
+    .product-strip{display:flex;align-items:center;gap:16px;background:linear-gradient(105deg,#162640,#203960);border-radius:17px;color:#fff;padding:18px 22px;box-shadow:0 10px 26px #263e6720;margin-bottom:17px}.product-symbol{display:grid;place-items:center;width:53px;height:53px;border-radius:13px;background:#ffffff1a;flex:none}.product-symbol svg{width:27px;height:27px}.product-strip .kicker{font-size:10px;letter-spacing:1.35px;text-transform:uppercase;color:#a9c0e2;font-weight:850}.product-strip strong{display:block;font-size:18px;letter-spacing:-.3px;margin:3px 0}.product-strip small{font-size:11px;color:#b6c9e2}.product-state{margin-left:auto;white-space:nowrap;font-size:11px;font-weight:800;padding:8px 12px;border-radius:99px;background:#1b715f;color:#b6f3df}.product-state.low{background:#77541b;color:#ffdf9b}.product-state.zero{background:#773245;color:#ffe1e6}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:17px}.stat{border:1px solid var(--line);border-radius:var(--radius);background:#fff;padding:17px 18px 16px;box-shadow:var(--shadow);min-width:0}.stathead{display:flex;align-items:center;justify-content:space-between;gap:9px;color:#718096;font-size:11px;font-weight:730}.iconbox{display:grid;place-items:center;border-radius:10px;width:34px;height:34px;background:#ecf1ff;color:#526ae1}.iconbox.green{background:var(--teal-light);color:var(--teal)}.iconbox.red{background:var(--red-light);color:var(--red)}.iconbox.amber{background:var(--amber-light);color:var(--amber)}.statvalue{font-size:33px;font-weight:870;line-height:1.15;letter-spacing:-1.3px;margin-top:9px;font-variant-numeric:tabular-nums}.statfoot{color:#92a0b1;font-size:11px;margin-top:5px}
+    .dashboard-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(305px,1fr);gap:17px;align-items:start}.column{display:grid;gap:17px;min-width:0}.panel{border:1px solid var(--line);background:#fff;border-radius:var(--radius);padding:21px;box-shadow:var(--shadow);min-width:0}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}.panel-head p{margin:5px 0 0;font-size:11px;color:#9aa4b4}.switch{display:inline-flex;gap:2px;border-radius:9px;background:#f2f5fa;padding:3px;flex-shrink:0}.switch button{border:0;border-radius:7px;padding:5px 9px;background:transparent;color:#8c9aac;font-size:11px;font-weight:800}.switch button.active{background:white;color:#304b76;box-shadow:0 1px 6px #20365a16}
+    .chart-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.chart-total{font-size:29px;font-weight:850;letter-spacing:-1px;line-height:1}.chart-difference{font-size:11px;font-weight:850}.chart-difference.up{color:var(--teal)}.chart-difference.down{color:var(--red)}.chart-difference.flat{color:var(--muted)}.chart-area{width:100%;height:207px;margin-top:13px;position:relative}.chart-area svg{width:100%;height:100%;overflow:visible}.chart-empty-note{font-size:11px;color:#9aa7b9;margin:11px 0 0;display:flex;align-items:center;gap:7px}.chart-empty-note .dot{width:7px;height:7px;border-radius:50%;background:#5269e6}
+    .inventory-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;gap:10px}.stock-caption{font-size:12px;color:#77869a}.stock-large{font-size:40px;font-weight:900;letter-spacing:-1.7px;line-height:1}.stock-large small{font-size:12px;color:#8795a8;letter-spacing:0;font-weight:700}.meter{height:11px;background:#edf1f7;border-radius:999px;margin:16px 0 10px;position:relative}.fill{height:100%;background:#0d9c7d;border-radius:999px;transition:width .2s}.fill.low{background:#e2a047}.fill.zero{background:#df5668}.threshold{position:absolute;height:21px;width:2px;background:#6e7e95;left:50%;top:-5px;transform:translateX(-50%);box-shadow:0 0 0 2px #fff}.meter-legend{display:flex;justify-content:space-between;gap:7px;font-size:10px;color:#98a4b6}.notice{margin-top:17px;padding:13px 14px;border-radius:11px;background:#ecf9f3;color:#198263;font-size:12px;line-height:1.6}.notice.low{background:#fff6e7;color:#9c690d}.notice.zero{background:#fff0f2;color:#bc4052}.notice strong{font-weight:800}.inventory-facts{display:grid;grid-template-columns:1fr 1fr;margin-top:17px;gap:10px}.fact{border-radius:11px;border:1px solid #e9edf4;padding:11px 12px}.fact small{display:block;color:#92a0af;font-size:10px}.fact strong{font-size:19px;font-variant-numeric:tabular-nums}.fact em{font-style:normal;font-size:10px;color:#9aa7b7;font-weight:650}
+    .op-label{display:block;font-size:12px;color:#53657e;font-weight:780;margin:12px 0 7px}.control{width:100%;min-height:43px;padding:10px 12px;border:1px solid #dce4ef;background:white;border-radius:10px;color:#273b59;outline:none}.control::placeholder{color:#a7b0bf}.control:focus{border-color:#718ce8}.qty-controls{display:flex;align-items:stretch;gap:9px}.qty-controls input{text-align:center;font-size:18px;font-weight:850;min-width:0;flex:1}.stepper{display:grid;place-items:center;width:43px;border:1px solid #dce4ef;background:#f7f9fc;border-radius:10px;color:#455b7b;font-size:20px;font-weight:650}.op-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}.form-tip{font-size:10px;color:#9aa7b7;margin:11px 0 0}.divider{border:0;border-top:1px solid #eef0f5;margin:20px 0 15px}.mini-row{display:flex;justify-content:space-between;gap:12px;align-items:center}.mini-row strong{font-size:12px}.minimum-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:9px}.minimum-row input{min-width:0}.hint{font-size:11px;color:#97a3b4;margin:7px 0 0}
+    .flow-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:13px}.flow-stat{background:#f8fafc;border:1px solid #eef2f7;border-radius:10px;padding:11px 12px}.flow-stat label{display:block;font-size:10px;color:#7c8ca1}.flow-stat strong{display:block;font-size:19px;margin-top:3px}.flow-stat strong.green{color:var(--teal)}.flow-stat strong.red{color:var(--red)}.bars{display:flex;align-items:flex-end;height:103px;gap:8px;padding-top:8px;border-bottom:1px solid #e9eef5}.bar-day{display:flex;flex:1;flex-direction:column;align-items:center;justify-content:flex-end;gap:7px;height:100%;min-width:0}.bar-pair{height:80px;display:flex;align-items:end;justify-content:center;gap:3px;width:100%}.bar{width:min(15px,38%);min-height:2px;border-radius:5px 5px 0 0;background:#1ca787}.bar.out{background:#d97889}.bar-day small{color:#9aa7b5;font-size:10px;white-space:nowrap}.legend{display:flex;gap:15px;margin-top:14px;font-size:10px;color:#8c9aaf}.legend span:before{content:"";display:inline-block;border-radius:3px;width:8px;height:8px;background:#1ca787;margin-right:5px}.legend span:last-child:before{background:#d97889}
+    .history-panel{margin-top:17px}.filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.select{border:1px solid #e0e6f0;background:#fff;border-radius:9px;color:#566980;font-size:11px;min-height:33px;padding:6px 9px;font-weight:750}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:560px;text-align:left}th{background:#f7f9fc;padding:11px 13px;font-weight:850;text-transform:uppercase;letter-spacing:.55px;color:#8494a9;font-size:10px}td{padding:13px;font-size:12px;color:#4f6077;border-bottom:1px solid #edf1f5}tbody tr:last-child td{border-bottom:0}td strong{color:#283c56}.type-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:820;border-radius:99px;padding:5px 8px;background:#e8f7f0;color:#0e886c}.type-badge.out{background:#fff0f2;color:#d45164}.type-badge svg{width:12px;height:12px}.qty-number{font-variant-numeric:tabular-nums;font-weight:850}.qty-number.in{color:var(--teal)}.qty-number.out{color:var(--red)}.table-empty{text-align:center;padding:33px 12px;color:#9aa6b5}.table-empty strong{display:block;color:#556987;margin-bottom:4px}.table-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11px;color:#9da9b8;margin-top:14px}
+    .foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#9ba6b7;font-size:11px;margin:20px 0 0;padding:0 2px}.foot strong{color:#5c6c83}.toast{position:fixed;right:20px;bottom:20px;z-index:30;background:#12243d;color:white;border-radius:11px;padding:13px 18px;box-shadow:0 12px 28px #0a1a3055;font-size:12px;max-width:calc(100vw - 40px)}[hidden]{display:none!important}
+    @media(max-width:1230px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-grid{grid-template-columns:minmax(0,1.3fr) minmax(290px,1fr)}}
+    @media(max-width:1000px){.dashboard-grid{grid-template-columns:1fr}.column{grid-template-columns:1fr 1fr}.column.right .panel{min-width:0}}
+    @media(max-width:760px){.app{display:block}.sidebar{position:static;height:auto;min-height:0;padding:12px 18px}.brand{padding:0}.brandmark{width:34px;height:34px}.brand b{font-size:18px}.brand small{font-size:8px}.side-label,.side-link,.sidebar-bottom{display:none}.content{padding:22px 15px 22px}.heading{display:block}.head-actions{justify-content:flex-start;margin-top:14px}.product-strip{padding:15px;gap:11px}.product-strip strong{font-size:15px}.product-symbol{width:43px;height:43px}.stats{gap:9px}.stat{padding:13px}.statvalue{font-size:29px}.stathead{font-size:10px}.statfoot{font-size:10px}.iconbox{width:29px;height:29px}.column{grid-template-columns:1fr}.panel{padding:17px}.history-panel{margin-top:17px}}
+    @media(max-width:430px){.stathead{align-items:flex-start}.product-state{font-size:0;padding:8px}.product-state:before{content:"●";font-size:13px}.header-title{font-size:25px}.btn-outline.export{flex:1}.head-actions .pill{order:3}.flow-summary{gap:8px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.fill{transition:none}}
   </style>
 </head>
 <body>
-<div class="app">
-  <aside aria-label="Menu do AutoStock">
-    <div class="brand"><div class="brand-mark" aria-hidden="true">A</div><div><strong>AutoStock</strong><small>Controle de estoque</small></div></div>
-    <div class="nav-caption">Navegação</div>
-    <div class="nav-item"><span class="symbol" aria-hidden="true">▦</span> Painel principal</div>
-    <div class="aside-end"><div class="aside-note"><strong>🎓 Projeto acadêmico</strong><p>Controle demonstrativo de um único produto. Uma integração com o ESP32 poderá ser feita futuramente.</p></div><div class="aside-bottom">AutoStock • Versão 556</div></div>
-  </aside>
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5ZM3 7v10l9 5 9-5V7M12 12v10"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M7 15l4-4 3 2 5-7"/></symbol>
+    <symbol id="i-arrows" viewBox="0 0 24 24"><path d="M7 3v14m-4-4 4 4 4-4M17 21V7m-4 4 4-4 4 4"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-reload" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2 6M20 4v7h-7"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  </svg>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="brandmark"><svg class="icon"><use href="#i-box"/></svg></div><div><b>AutoStock</b><small>Controle inteligente</small></div></div>
+      <div class="side-label">Navegação</div>
+      <a class="side-link active" href="#visao-geral"><svg class="icon"><use href="#i-grid"/></svg> Visão geral</a>
+      <a class="side-link" href="#operacoes"><svg class="icon"><use href="#i-arrows"/></svg> Movimentar estoque</a>
+      <a class="side-link" href="#historico"><svg class="icon"><use href="#i-chart"/></svg> Histórico e relatórios</a>
+      <div class="sidebar-bottom"><div class="side-panel"><div class="little">Controle de estoque</div><strong>Óleo 556 Radnaq</strong><p>Consulte o saldo disponível, acompanhe movimentações e controle o nível mínimo.</p></div><div class="sidebar-meta">AutoStock • Edição Óleo 556 • v2.0</div></div>
+    </aside>
 
-  <main>
-    <header class="header">
-      <div><div class="eyebrow">Painel de controle • 1 produto</div><h1>Controle de estoque</h1><p class="subtitle">Acompanhe as unidades e registre entradas e saídas do Óleo 556 Radnaq.</p></div>
-      <span class="demo-pill">Modo demonstração</span>
-    </header>
+    <main class="content" id="visao-geral">
+      <div class="breadcrumb">AutoStock <span aria-hidden="true"> / </span> <strong>Painel principal</strong></div>
+      <header class="heading"><div><div class="eyebrow">Dashboard de estoque</div><h1>Visão geral do estoque</h1><p class="subtitle">Acompanhe, registre movimentações e analise o Óleo 556 Radnaq em tempo real neste navegador.</p></div><div class="head-actions"><span class="pill demo">Controle ativo</span><button class="btn btn-outline export" id="exportTop" type="button"><svg class="icon"><use href="#i-download"/></svg> Exportar CSV</button></div></header>
 
-    <section class="stats" aria-label="Indicadores do estoque">
-      <div class="stat"><div class="stat-top">Quantidade disponível <span class="stat-icon" aria-hidden="true">▤</span></div><div class="stat-num" id="currentQty">8</div><div class="stat-desc">Frascos de 500 ml</div></div>
-      <div class="stat"><div class="stat-top">Estoque mínimo <span class="stat-icon" aria-hidden="true">◎</span></div><div class="stat-num" id="minQty">5</div><div class="stat-desc">Limite para alerta</div></div>
-      <div class="stat"><div class="stat-top">Total de entradas <span class="stat-icon green" aria-hidden="true">↙</span></div><div class="stat-num" id="totalIn">0</div><div class="stat-desc">Unidades adicionadas</div></div>
-      <div class="stat"><div class="stat-top">Total de saídas <span class="stat-icon red" aria-hidden="true">↗</span></div><div class="stat-num" id="totalOut">0</div><div class="stat-desc">Unidades retiradas</div></div>
-    </section>
+      <section class="product-strip" aria-label="Produto monitorado"><div class="product-symbol"><svg class="icon"><use href="#i-box"/></svg></div><div><div class="kicker">Produto monitorado • Único item</div><strong>Óleo 556 Radnaq — 500 ml</strong><small>Controle de unidades (frascos) • Atualização instantânea</small></div><span class="product-state" id="productState">● Estoque normal</span></section>
 
-    <div class="grid">
-      <section class="panel" aria-label="Produto monitorado">
-        <div class="panel-heading"><div><h2>Produto monitorado</h2><p>Apenas um produto cadastrado neste protótipo.</p></div></div>
-        <div class="product-main">
-          <p class="product-overline">Produto único • Radnaq</p>
-          <h3 class="product-name">Óleo 556 Radnaq</h3>
-          <p class="product-desc">Frasco de 500 ml • Controle individual de estoque</p>
-          <div class="tags"><span class="tag">Marca: Radnaq</span><span class="tag">Produto: Óleo 556</span><span class="tag">500 ml</span></div>
-        </div>
-        <div class="inventory">
-          <div class="inv-top"><h3>Situação do estoque</h3><span id="status" class="status ok">Estoque normal</span></div>
-          <div class="stock-line"><strong id="mainQty">8</strong><span>unidades disponíveis</span></div>
-          <div class="meter" role="progressbar" id="stockMeter" aria-label="Quantidade em relação à meta de segurança" aria-valuemin="0" aria-valuemax="10" aria-valuenow="8"><div class="meter-fill" id="meterFill" style="width:80%"></div><div class="meter-threshold" id="meterThreshold" style="left:50%"></div></div>
-          <div class="meter-legend"><span id="minLabel">Estoque mínimo: 5 un.</span><span id="targetLabel">Meta de segurança: 10 un.</span></div>
-          <div class="alert-message" id="stockMessage" role="status">✓ Estoque acima do mínimo definido. Nenhuma reposição necessária no momento.</div>
-        </div>
+      <section class="stats" aria-label="Indicadores principais">
+        <div class="stat"><div class="stathead">Estoque disponível <span class="iconbox"><svg class="icon"><use href="#i-layers"/></svg></span></div><div class="statvalue" id="statStock">8</div><div class="statfoot">Frascos disponíveis agora</div></div>
+        <div class="stat"><div class="stathead">Estoque mínimo <span class="iconbox amber"><svg class="icon"><use href="#i-target"/></svg></span></div><div class="statvalue" id="statMin">5</div><div class="statfoot">Limite configurado para alerta</div></div>
+        <div class="stat"><div class="stathead">Entradas acumuladas <span class="iconbox green"><svg class="icon"><use href="#i-plus"/></svg></span></div><div class="statvalue" id="statIn">0</div><div class="statfoot">Unidades recebidas no registro</div></div>
+        <div class="stat"><div class="stathead">Saídas acumuladas <span class="iconbox red"><svg class="icon"><use href="#i-minus"/></svg></span></div><div class="statvalue" id="statOut">0</div><div class="statfoot">Unidades retiradas no registro</div></div>
       </section>
 
-      <div class="stack">
-        <section class="panel" aria-label="Movimentar estoque">
-          <div class="panel-heading"><div><h2>Movimentar estoque</h2><p>Escolha quantas unidades deseja adicionar ou retirar.</p></div></div>
-          <form id="movementForm">
-            <div class="form-group"><label for="movementQty">Quantidade de frascos</label><input type="number" min="1" max="999999" step="1" id="movementQty" value="1" required inputmode="numeric"></div>
-            <div class="action-grid"><button class="btn in" id="entryBtn" type="button">＋ Registrar entrada</button><button class="btn out" id="exitBtn" type="button">− Registrar saída</button></div>
-            <p class="short-help">Exemplo: selecione 3 e clique em <strong>Registrar saída</strong> para retirar 3 frascos do estoque.</p>
-          </form>
-          <form id="minimumForm" class="min-editor">
-            <label for="minimumInput">Alterar quantidade mínima</label>
-            <div class="min-inline"><input type="number" id="minimumInput" min="0" max="999999" step="1" value="5" required inputmode="numeric"><button type="submit" class="btn blue">Salvar mínimo</button></div>
-          </form>
-        </section>
-        <section class="panel" aria-label="Informações do AutoStock">
-          <div class="panel-heading" style="margin-bottom:0"><div><h2>Como funciona?</h2><p>O Dashboard registra a quantidade em estoque e avisa quando ela chega ao limite mínimo. As movimentações são salvas neste navegador.</p></div></div>
-        </section>
+      <div class="dashboard-grid">
+        <div class="column">
+          <section class="panel" aria-label="Gráfico de evolução do saldo">
+            <div class="panel-head"><div><h2>Evolução do estoque</h2><p>Saldo ao final de cada dia</p></div><div class="switch" aria-label="Período do gráfico"><button type="button" data-period="7" class="active" aria-pressed="true">7 dias</button><button type="button" data-period="14" aria-pressed="false">14 dias</button><button type="button" data-period="30" aria-pressed="false">30 dias</button></div></div>
+            <div class="chart-top"><span class="chart-total" id="chartQuantity">8 un.</span><span class="chart-difference flat" id="chartDelta">Sem alteração no período</span></div>
+            <div class="chart-area"><svg id="trendChart" viewBox="0 0 650 207" role="img" aria-label="Gráfico da quantidade em estoque ao longo dos dias"></svg></div>
+            <p class="chart-empty-note"><span class="dot"></span> Gráfico atualizado conforme as movimentações registradas neste navegador.</p>
+          </section>
+          <section class="panel" aria-label="Saúde do estoque"><div class="inventory-header"><div><h2>Saúde do estoque</h2><p class="hint">Situação em relação ao nível mínimo</p></div><span id="stockBadge" class="pill" style="background:#e6f7f2;color:#07876e">Normal</span></div><div class="stock-large"><span id="bigStock">8</span> <small>unidades disponíveis</small></div><div class="meter" id="meter" role="progressbar" aria-label="Progresso para a meta de estoque" aria-valuemin="0" aria-valuemax="10" aria-valuenow="8"><div id="meterFill" class="fill" style="width:80%"></div><div id="meterThreshold" class="threshold" style="left:50%"></div></div><div class="meter-legend"><span id="minimumLabel">Mínimo: 5 un.</span><span id="targetLabel">Meta de referência: 10 un.</span></div><div class="notice" id="stockNotice" role="status">Estoque acima do mínimo. Nenhuma reposição imediata indicada.</div><div class="inventory-facts"><div class="fact"><small>Unidades até a meta</small><strong id="toTarget">2</strong> <em>frascos</em></div><div class="fact"><small>Folga acima do mínimo</small><strong id="stockSlack">3</strong> <em>unidades</em></div></div></section>
+        </div>
+        <div class="column right">
+          <section class="panel" id="operacoes" aria-label="Registrar movimentações"><div class="panel-head"><div><h2>Nova movimentação</h2><p>Atualize o saldo do Óleo 556</p></div><div class="iconbox"><svg class="icon"><use href="#i-arrows"/></svg></div></div><form id="moveForm"><label class="op-label" for="moveQty">Quantidade de frascos</label><div class="qty-controls"><button class="stepper" type="button" id="minusQty" aria-label="Diminuir quantidade">−</button><input id="moveQty" class="control" type="number" min="1" max="999999" step="1" value="1" inputmode="numeric" required><button class="stepper" type="button" id="plusQty" aria-label="Aumentar quantidade">+</button></div><label class="op-label" for="moveNote">Observação <span style="font-weight:500;color:#a2adbc">(opcional)</span></label><input id="moveNote" class="control" type="text" maxlength="100" placeholder="Ex.: venda, reposição, teste..."><div class="op-actions"><button type="button" class="btn btn-in" id="entryBtn"><svg class="icon"><use href="#i-plus"/></svg> Entrada</button><button type="button" class="btn btn-out" id="exitBtn"><svg class="icon"><use href="#i-minus"/></svg> Saída</button></div><p class="form-tip">Ao registrar, o estoque, os gráficos e o histórico são atualizados.</p></form><hr class="divider"><div class="mini-row"><strong>Configurar estoque mínimo</strong><span style="color:#a5afbe;font-size:11px">Alerta automático</span></div><form id="minimumForm" class="minimum-row"><input id="minimumInput" class="control" type="number" min="0" max="999999" step="1" value="5" aria-label="Estoque mínimo" required><button class="btn btn-primary" type="submit">Salvar mínimo</button></form></section>
+          <section class="panel" aria-label="Resumo de entradas e saídas"><div class="panel-head"><div><h2>Fluxo dos últimos 7 dias</h2><p>Comparativo de unidades movimentadas por dia</p></div></div><div class="flow-summary"><div class="flow-stat"><label>Entradas no período</label><strong class="green" id="weekIn">0</strong></div><div class="flow-stat"><label>Saídas no período</label><strong class="red" id="weekOut">0</strong></div></div><div class="bars" id="flowBars" aria-label="Barras diárias de entradas e saídas"></div><div class="legend"><span>Entradas</span><span>Saídas</span></div></section>
+        </div>
       </div>
-    </div>
 
-    <section class="panel history" aria-label="Histórico de movimentações">
-      <div class="history-top"><div><h2>Histórico de movimentações</h2><p class="short-help" style="margin-top:4px">Entradas e saídas do Óleo 556</p></div><span class="tag" id="movementsCount">0 registros</span></div>
-      <div class="table-scroll"><table><thead><tr><th>Data e hora</th><th>Tipo</th><th>Quantidade</th><th>Saldo após</th></tr></thead><tbody id="movementRows"><tr><td class="empty" colspan="4">Nenhuma movimentação registrada. Faça uma entrada ou saída para começar.</td></tr></tbody></table></div>
-    </section>
+      <section class="panel history-panel" id="historico" aria-label="Histórico de movimentações"><div class="panel-head"><div><h2>Histórico de movimentações</h2><p>Todas as entradas e saídas registradas neste navegador</p></div><div class="filters"><select id="filterType" class="select" aria-label="Filtrar por tipo"><option value="all">Todos os tipos</option><option value="in">Entradas</option><option value="out">Saídas</option></select><button id="exportHistory" type="button" class="btn btn-outline small"><svg class="icon"><use href="#i-download"/></svg> CSV</button></div></div><div class="table-wrap"><table><thead><tr><th>Data / hora</th><th>Operação</th><th>Observação</th><th>Quantidade</th><th>Saldo final</th></tr></thead><tbody id="historyBody"><tr><td colspan="5" class="table-empty">Nenhuma movimentação registrada.</td></tr></tbody></table></div><div class="table-bottom"><span id="historyCount">0 movimentações</span><span>Últimos 100 registros exibidos</span></div></section>
 
-    <footer class="footer"><div><strong>AutoStock • Projeto acadêmico</strong> — Dados armazenados somente neste navegador; sem conexão com ESP32 ou banco online.</div><button type="button" class="btn ghost" id="resetBtn">↻ Reiniciar demonstração</button></footer>
-  </main>
-</div>
-<div class="toast" role="status" aria-live="polite" id="toast" hidden></div>
-<script>
-  // CONFIGURAÇÃO INICIAL DO ÚNICO PRODUTO
-  // Você pode editar os valores 8 e 5 abaixo antes de publicar.
-  const INITIAL_STOCK = 8;
-  const INITIAL_MINIMUM = 5;
-  const STORAGE_KEY = 'autostock-radnaq-556-500ml-v1';
-  const MAX_VALUE = 999999;
-  const $ = id => document.getElementById(id);
-  const formatNumber = new Intl.NumberFormat('pt-BR');
-  const dateFormatter = new Intl.DateTimeFormat('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-
-  function emptyData(){return {quantity:INITIAL_STOCK,minimum:INITIAL_MINIMUM,movements:[]};}
-  function validNumber(value){return Number.isSafeInteger(value)&&value>=0&&value<=MAX_VALUE;}
-  function loadData(){
-    try {
-      const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if(stored&&validNumber(stored.quantity)&&validNumber(stored.minimum)&&Array.isArray(stored.movements)){
-        return {quantity:stored.quantity,minimum:stored.minimum,movements:stored.movements.filter(m=>m&&['in','out'].includes(m.type)&&validNumber(m.qty)&&validNumber(m.balance)&&typeof m.date==='string').slice(0,500)};
-      }
-    }catch(error){console.warn('Dados locais indisponíveis.',error);}
-    return emptyData();
-  }
-  let data=loadData();
-  function saveData(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}catch(error){showToast('Aviso: este navegador não permitiu salvar os dados.');}}
-  function showToast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>{$('toast').hidden=true;},2900);}
-  function getStatus(){if(data.quantity===0)return 'zero';if(data.quantity<=data.minimum)return 'low';return 'ok';}
-  function render(){
-    const status=getStatus();
-    $('currentQty').textContent=formatNumber.format(data.quantity);
-    $('mainQty').textContent=formatNumber.format(data.quantity);
-    $('minQty').textContent=formatNumber.format(data.minimum);
-    $('totalIn').textContent=formatNumber.format(data.movements.filter(m=>m.type==='in').reduce((s,m)=>s+m.qty,0));
-    $('totalOut').textContent=formatNumber.format(data.movements.filter(m=>m.type==='out').reduce((s,m)=>s+m.qty,0));
-    $('minimumInput').value=data.minimum;
-
-    const statusEl=$('status');statusEl.className='status '+status;
-    statusEl.textContent=status==='zero'?'Estoque zerado':status==='low'?'Estoque baixo':'Estoque normal';
-    const message=$('stockMessage');message.className='alert-message '+(status==='ok'?'':status);
-    message.textContent=status==='zero'?'⚠ Sem unidades em estoque. É necessário repor o produto.':status==='low'?'⚠ Atenção: a quantidade chegou ao estoque mínimo ou ficou abaixo dele.':'✓ Estoque acima do mínimo definido. Nenhuma reposição necessária no momento.';
-
-    const target=Math.max(data.minimum*2,10);
-    const max=Math.max(target,data.quantity);
-    $('meterFill').className='meter-fill '+(status==='ok'?'':status);
-    $('meterFill').style.width=(data.quantity/max*100)+'%';
-    $('meterThreshold').style.left=(data.minimum/max*100)+'%';
-    $('stockMeter').setAttribute('aria-valuemax',String(max));
-    $('stockMeter').setAttribute('aria-valuenow',String(data.quantity));
-    $('minLabel').textContent='Estoque mínimo: '+formatNumber.format(data.minimum)+' un.';
-    $('targetLabel').textContent='Meta de segurança: '+formatNumber.format(target)+' un.';
-
-    $('movementsCount').textContent=data.movements.length+' '+(data.movements.length===1?'registro':'registros');
-    renderMovements();
-  }
-  function renderMovements(){
-    const tbody=$('movementRows');tbody.replaceChildren();
-    if(!data.movements.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=4;td.className='empty';td.textContent='Nenhuma movimentação registrada. Faça uma entrada ou saída para começar.';tr.append(td);tbody.append(tr);return;}
-    data.movements.slice(0,10).forEach(m=>{
-      const tr=document.createElement('tr');
-      const tdDate=document.createElement('td');
-      const date=new Date(m.date);tdDate.textContent=Number.isNaN(date.getTime())?'Data indisponível':dateFormatter.format(date);
-      const tdType=document.createElement('td');const span=document.createElement('span');span.className='movement-type '+m.type;span.textContent=m.type==='in'?'↙ Entrada':'↗ Saída';tdType.append(span);
-      const tdQty=document.createElement('td');tdQty.className='amount';tdQty.textContent=(m.type==='in'?'+':'−')+formatNumber.format(m.qty);
-      const tdBalance=document.createElement('td');tdBalance.textContent=formatNumber.format(m.balance)+' un.';
-      tr.append(tdDate,tdType,tdQty,tdBalance);tbody.append(tr);
-    });
-  }
-  function getMovementQuantity(){
-    const input=$('movementQty');const value=Number(input.value);
-    if(!input.value.trim()||!Number.isSafeInteger(value)||value<1||value>MAX_VALUE){showToast('Digite uma quantidade inteira entre 1 e 999.999.');input.focus();return null;}
-    return value;
-  }
-  function movement(type){
-    const qty=getMovementQuantity();if(qty===null)return;
-    if(type==='out'&&qty>data.quantity){showToast('Não há unidades suficientes para essa saída.');return;}
-    if(type==='in'&&data.quantity+qty>MAX_VALUE){showToast('Quantidade máxima de demonstração excedida.');return;}
-    data.quantity+=type==='in'?qty:-qty;
-    data.movements.unshift({type,qty,balance:data.quantity,date:new Date().toISOString()});
-    data.movements=data.movements.slice(0,500);
-    saveData();render();showToast(type==='in'?'Entrada registrada com sucesso!':'Saída registrada com sucesso!');
-  }
-  $('entryBtn').addEventListener('click',()=>movement('in'));
-  $('exitBtn').addEventListener('click',()=>movement('out'));
-  $('movementForm').addEventListener('submit',event=>{event.preventDefault();movement('in');});
-  $('minimumForm').addEventListener('submit',event=>{
-    event.preventDefault();const input=$('minimumInput');const minimum=Number(input.value);
-    if(!input.value.trim()||!validNumber(minimum)){showToast('O estoque mínimo deve ser um número inteiro entre 0 e 999.999.');input.focus();return;}
-    data.minimum=minimum;saveData();render();showToast('Estoque mínimo atualizado!');
-  });
-  $('resetBtn').addEventListener('click',()=>{
-    if(!confirm('Apagar as movimentações e voltar para 8 unidades com mínimo de 5?'))return;
-    data=emptyData();saveData();$('movementQty').value=1;render();showToast('Demonstração reiniciada.');
-  });
-  render();
-</script>
+      <footer class="foot"><span><strong>AutoStock v2.1</strong> • Dados salvos neste navegador • Sem sincronização automática</span><button class="btn btn-quiet small" id="resetBtn" type="button"><svg class="icon"><use href="#i-reload"/></svg> Restaurar dados iniciais</button></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script>
+    // =====================================================
+    // AUTOSTOCK — UM ÚNICO PRODUTO: ÓLEO 556 RADNAQ 500 ML
+    // Vercel: site estático, sem dependências ou banco online.
+    // Mantém a chave de dados da versão anterior para preservar o histórico local.
+    // =====================================================
+    const STORAGE_KEY = 'autostock-radnaq-556-500ml-v1';
+    const INITIAL_STOCK = 8;
+    const INITIAL_MINIMUM = 5;
+    const MAX_QTY = 999999;
+    const HISTORY_LIMIT = 500;
+    const $ = id => document.getElementById(id);
+    const nf = new Intl.NumberFormat('pt-BR');
+    const dateTimeFormat = new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const weekdayFormat = new Intl.DateTimeFormat('pt-BR',{weekday:'short'});
+    const dayFormat = new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short'});
+    let period = 7;
+    const initialData = () => ({quantity:INITIAL_STOCK,minimum:INITIAL_MINIMUM,movements:[]});
+    const validInt = x => Number.isSafeInteger(x) && x >= 0 && x <= MAX_QTY;
+    function readData(){
+      try{
+        const loaded = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if(!loaded || !validInt(loaded.quantity) || !validInt(loaded.minimum) || !Array.isArray(loaded.movements))return initialData();
+        const movements = loaded.movements.filter(m=>m && (m.type==='in'||m.type==='out') && Number.isSafeInteger(m.qty) && m.qty>=1 && m.qty<=MAX_QTY && validInt(m.balance) && typeof m.date==='string' && !Number.isNaN(Date.parse(m.date))).slice(0,HISTORY_LIMIT).map(m=>({type:m.type,qty:m.qty,balance:m.balance,date:m.date,note:typeof m.note==='string'?m.note.slice(0,100):''}));
+        return {quantity:loaded.quantity,minimum:loaded.minimum,movements};
+      }catch(_){return initialData();}
+    }
+    let data = readData();
+    function saveData(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));return true;}catch(_){toast('Não foi possível salvar no navegador.');return false;}}
+    function toast(message){const el=$('toast');el.textContent=message;el.hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>{el.hidden=true;},3300);}
+    function state(){return data.quantity===0?'zero':data.quantity<=data.minimum?'low':'ok';}
+    function statusText(s){return s==='zero'?'Estoque zerado':s==='low'?'Estoque baixo':'Estoque normal';}
+    function target(){return Math.max(10,data.minimum*2);}
+    function dayStart(date){return new Date(date.getFullYear(),date.getMonth(),date.getDate());}
+    function datesBack(n){const today=dayStart(new Date());return Array.from({length:n},(_,i)=>{const d=new Date(today);d.setDate(today.getDate()-(n-1-i));return d;});}
+    function changesAfter(until){let sum=0;for(const m of data.movements){const t=new Date(m.date).getTime();if(t>until){sum+=(m.type==='in'?m.qty:-m.qty);}}return sum;}
+    function endDayQty(d){const end=new Date(d);end.setHours(23,59,59,999);return Math.max(0,data.quantity-changesAfter(end.getTime()));}
+    function periodValues(days){return datesBack(days).map(d=>({date:d,stock:endDayQty(d)}));}
+    function renderStats(){
+      const sum=type=>data.movements.filter(m=>m.type===type).reduce((a,m)=>a+m.qty,0);
+      $('statStock').textContent=nf.format(data.quantity);$('statMin').textContent=nf.format(data.minimum);
+      $('statIn').textContent=nf.format(sum('in'));$('statOut').textContent=nf.format(sum('out'));
+      const s=state(), label=statusText(s),tag=$('productState');tag.className='product-state '+(s==='ok'?'':s);tag.textContent='● '+label;
+      $('stockBadge').textContent=label;$('stockBadge').style.background=s==='ok'?'#e6f7f2':s==='low'?'#fff4dc':'#fff0f2';$('stockBadge').style.color=s==='ok'?'#07876e':s==='low'?'#a16d0d':'#bc4052';
+      $('bigStock').textContent=nf.format(data.quantity);const t=target(), max=Math.max(t,data.quantity,1);
+      $('meterFill').className='fill '+(s==='ok'?'':s);$('meterFill').style.width=(100*data.quantity/max)+'%';$('meterThreshold').style.left=(100*data.minimum/max)+'%';
+      $('meter').setAttribute('aria-valuemax',String(max));$('meter').setAttribute('aria-valuenow',String(data.quantity));
+      $('minimumLabel').textContent='Mínimo: '+nf.format(data.minimum)+' un.';$('targetLabel').textContent='Meta de referência: '+nf.format(t)+' un.';
+      $('toTarget').textContent=nf.format(Math.max(0,t-data.quantity));$('stockSlack').textContent=nf.format(Math.max(0,data.quantity-data.minimum));
+      const note=$('stockNotice');note.className='notice '+(s==='ok'?'':s);
+      if(s==='zero')note.textContent='Atenção: o estoque está zerado. Registre uma entrada para voltar a ter unidades.';
+      else if(s==='low')note.textContent='Atenção: o saldo está no mínimo ou abaixo dele. Considere repor '+nf.format(Math.max(0,t-data.quantity))+' un. para chegar à meta de referência.';
+      else note.textContent='Estoque acima do mínimo. Há '+nf.format(data.quantity-data.minimum)+' un. de folga antes de atingir o limite de alerta.';
+    }
+    function renderTrend(){
+      const series=periodValues(period);
+      const current=data.quantity;
+      // Variação desde o fechamento do dia anterior ao intervalo selecionado.
+      const start=dayStart(series[0].date);start.setDate(start.getDate()-1);
+      const previous=endDayQty(start);
+      const delta=current-previous;
+      $('chartQuantity').textContent=nf.format(current)+' un.';
+      const d=$('chartDelta');d.className='chart-difference '+(delta>0?'up':delta<0?'down':'flat');d.textContent=delta>0?'↑ +'+nf.format(delta)+' no período':delta<0?'↓ −'+nf.format(Math.abs(delta))+' no período':'Sem alteração no período';
+      const svg=$('trendChart');const w=Math.max(250,Math.round(svg.getBoundingClientRect().width)),h=207,left=38,right=14,top=15,bottom=32;
+      svg.setAttribute('viewBox','0 0 '+w+' '+h);
+      const innerW=w-left-right, innerH=h-top-bottom;
+      const values=series.map(p=>p.stock);const maxV=Math.max(10,target(),...values);const minV=0;
+      const x=i=>left+(innerW*i/Math.max(1,series.length-1));const y=v=>top+innerH-(v-minV)/(maxV-minV)*innerH;
+      const pts=series.map((p,i)=>[x(i),y(p.stock)]);
+      const line=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+      const area=line+' L '+x(series.length-1).toFixed(1)+' '+(top+innerH)+' L '+x(0).toFixed(1)+' '+(top+innerH)+' Z';
+      let parts=['<defs><linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5475ec" stop-opacity=".22"/><stop offset="100%" stop-color="#5475ec" stop-opacity="0"/></linearGradient></defs>'];
+      for(let k=0;k<=4;k++){const v=maxV*k/4,yy=y(v);parts.push('<line x1="'+left+'" y1="'+yy.toFixed(1)+'" x2="'+(w-right)+'" y2="'+yy.toFixed(1)+'" stroke="#ebeff6" stroke-dasharray="4 5"/><text x="'+(left-10)+'" y="'+(yy+4).toFixed(1)+'" fill="#9ba7ba" text-anchor="end" font-size="11">'+nf.format(Math.round(v))+'</text>');}
+      parts.push('<path d="'+area+'" fill="url(#areaFill)"/><path d="'+line+'" fill="none" stroke="#526ce7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>');
+      const last=pts[pts.length-1];parts.push('<circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="5" fill="#526ce7" stroke="#fff" stroke-width="3"/>');
+      const labels=[0,Math.floor((series.length-1)/2),series.length-1].filter((v,i,a)=>a.indexOf(v)===i);for(const i of labels)parts.push('<text x="'+x(i).toFixed(1)+'" y="'+(h-7)+'" text-anchor="middle" fill="#99a6b9" font-size="11">'+dayFormat.format(series[i].date).replace('.','')+'</text>');
+      svg.innerHTML=parts.join('');
+      svg.setAttribute('aria-label','Evolução diária de estoque em '+period+' dias. Estoque atual: '+current+' unidades.');
+    }
+    function renderFlow(){
+      const days=datesBack(7), start=days[0].getTime(), today=new Date().getTime();
+      const inCounts=days.map(()=>0),outCounts=days.map(()=>0);
+      for(const m of data.movements){const t=new Date(m.date).getTime();if(t<start||t>today)continue;const dt=dayStart(new Date(t)).getTime();const idx=days.findIndex(d=>d.getTime()===dt);if(idx>=0)(m.type==='in'?inCounts:outCounts)[idx]+=m.qty;}
+      const totalIn=inCounts.reduce((a,b)=>a+b,0),totalOut=outCounts.reduce((a,b)=>a+b,0),maxV=Math.max(1,...inCounts,...outCounts);
+      $('weekIn').textContent=nf.format(totalIn);$('weekOut').textContent=nf.format(totalOut);
+      const parent=$('flowBars');parent.replaceChildren();
+      days.forEach((day,i)=>{const col=document.createElement('div');col.className='bar-day';const pair=document.createElement('div');pair.className='bar-pair';const b1=document.createElement('div'),b2=document.createElement('div');b1.className='bar';b2.className='bar out';b1.style.height=(Math.max(2,inCounts[i]/maxV*78))+'px';b2.style.height=(Math.max(2,outCounts[i]/maxV*78))+'px';b1.title='Entradas: '+inCounts[i]+' un.';b2.title='Saídas: '+outCounts[i]+' un.';pair.append(b1,b2);const label=document.createElement('small');label.textContent=weekdayFormat.format(day).replace('.','').slice(0,3);col.append(pair,label);parent.append(col);});
+      parent.setAttribute('aria-label','Entradas '+totalIn+' unidades e saídas '+totalOut+' unidades nos últimos sete dias.');
+    }
+    function renderHistory(){
+      const filter=$('filterType').value;const rows=data.movements.filter(m=>filter==='all'||m.type===filter).slice(0,100);
+      const body=$('historyBody');body.replaceChildren();
+      if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=5;td.className='table-empty';const strong=document.createElement('strong');strong.textContent='Nenhum registro para mostrar';const info=document.createElement('span');info.textContent='Registre uma entrada ou saída para preencher o histórico.';td.append(strong,info);tr.append(td);body.append(tr);}
+      for(const m of rows){const tr=document.createElement('tr');const date=document.createElement('td');date.textContent=dateTimeFormat.format(new Date(m.date));const type=document.createElement('td');const badge=document.createElement('span');badge.className='type-badge '+(m.type==='out'?'out':'');badge.textContent=m.type==='in'?'↓ Entrada':'↑ Saída';type.append(badge);const note=document.createElement('td');note.textContent=m.note||'—';const qty=document.createElement('td');qty.className='qty-number '+m.type;qty.textContent=(m.type==='in'?'+':'−')+nf.format(m.qty);const bal=document.createElement('td');const bold=document.createElement('strong');bold.textContent=nf.format(m.balance)+' un.';bal.append(bold);tr.append(date,type,note,qty,bal);body.append(tr);}
+      $('historyCount').textContent=rows.length+' de '+data.movements.length+' movimentações';
+    }
+    function render(){renderStats();renderTrend();renderFlow();renderHistory();$('minimumInput').value=data.minimum;}
+    function getQty(){const el=$('moveQty');const n=Number(el.value);if(el.value.trim()===''||!Number.isSafeInteger(n)||n<1||n>MAX_QTY){toast('Informe uma quantidade inteira entre 1 e 999.999.');el.focus();return null;}return n;}
+    function move(type){const n=getQty();if(n===null)return;if(type==='out'&&n>data.quantity){toast('Saída não permitida: saldo insuficiente.');return;}if(type==='in'&&n>MAX_QTY-data.quantity){toast('Entrada excede o limite de unidades.');return;}const note=$('moveNote').value.trim().slice(0,100);data.quantity+=(type==='in'?n:-n);data.movements.unshift({type,qty:n,balance:data.quantity,date:new Date().toISOString(),note});data.movements=data.movements.slice(0,HISTORY_LIMIT);saveData();render();$('moveNote').value='';toast((type==='in'?'Entrada':'Saída')+' de '+n+' unidade(s) registrada!');}
+    $('entryBtn').addEventListener('click',()=>move('in'));$('exitBtn').addEventListener('click',()=>move('out'));$('moveForm').addEventListener('submit',event=>{event.preventDefault();move('in');});
+    $('minusQty').addEventListener('click',()=>{const value=Number($('moveQty').value)||1;$('moveQty').value=Math.max(1,value-1);});
+    $('plusQty').addEventListener('click',()=>{const value=Number($('moveQty').value)||0;$('moveQty').value=Math.min(MAX_QTY,value+1);});
+    $('minimumForm').addEventListener('submit',event=>{event.preventDefault();const el=$('minimumInput'),n=Number(el.value);if(el.value.trim()===''||!validInt(n)){toast('Informe um estoque mínimo válido, entre 0 e 999.999.');el.focus();return;}data.minimum=n;saveData();render();toast('Estoque mínimo atualizado.');});
+    for(const b of document.querySelectorAll('[data-period]'))b.addEventListener('click',()=>{period=Number(b.dataset.period);for(const other of document.querySelectorAll('[data-period]')){other.classList.toggle('active',other===b);other.setAttribute('aria-pressed',other===b?'true':'false');}renderTrend();});
+    $('filterType').addEventListener('change',renderHistory);
+    function csvSafe(v){let str=String(v??'');if(/^[\s]*[=+\-@\t\r]/.test(str))str="'"+str;return '"'+str.replace(/"/g,'""')+'"';}
+    function exportCSV(){
+      if(!data.movements.length){toast('Registre uma movimentação antes de exportar.');return;}
+      const cols=['Data e hora','Produto','Tipo','Quantidade','Saldo final','Observação'];
+      const rows=[cols,...data.movements.map(m=>[dateTimeFormat.format(new Date(m.date)),'Óleo 556 Radnaq 500 ml',m.type==='in'?'Entrada':'Saída',m.qty,m.balance,m.note||''])];
+      const csv='\uFEFF'+rows.map(r=>r.map(csvSafe).join(';')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='autostock-oleo-556-movimentacoes.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Histórico exportado para CSV!');
+    }
+    $('exportTop').addEventListener('click',exportCSV);$('exportHistory').addEventListener('click',exportCSV);
+    $('resetBtn').addEventListener('click',()=>{if(!confirm('Reiniciar o AutoStock com 8 unidades e mínimo 5? Todas as movimentações salvas neste navegador serão apagadas.'))return;data=initialData();saveData();$('moveQty').value=1;$('moveNote').value='';$('filterType').value='all';render();toast('Dados iniciais restaurados.');});
+    let resizeFrame;window.addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(renderTrend);});
+    render();
+  </script>
 </body>
 </html>
