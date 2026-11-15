@@ -201,7 +201,123 @@
     $('exportTop').addEventListener('click',exportCSV);$('exportHistory').addEventListener('click',exportCSV);
     $('resetBtn').addEventListener('click',()=>{if(!confirm('Reiniciar o AutoStock com 8 unidades e mínimo 5? Todas as movimentações salvas neste navegador serão apagadas.'))return;data=initialData();saveData();$('moveQty').value=1;$('moveNote').value='';$('filterType').value='all';render();toast('Dados iniciais restaurados.');});
     let resizeFrame;window.addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(renderTrend);});
+    
+    // AUTOSTOCK - SINCRONIZACAO COM ESP32
+
+    const CHAVE_LIVE = 'autostock-esp32-live-v1';
+
+    let salvoLive = null;
+    try {
+      salvoLive = JSON.parse(localStorage.getItem(CHAVE_LIVE));
+    } catch (_) {}
+
+    const minimoAtual = data.minimum;
+
+    data = {
+      quantity: salvoLive && validInt(salvoLive.quantity)
+        ? salvoLive.quantity : 0,
+      minimum: minimoAtual,
+      movements: salvoLive && Array.isArray(salvoLive.movements)
+        ? salvoLive.movements : []
+    };
+
+    let ultimaQuantidadeESP =
+      salvoLive && validInt(salvoLive.quantity)
+        ? salvoLive.quantity : null;
+
+    // O estoque sera controlado pela balanca
+    $('moveForm').style.display = 'none';
+    $('resetBtn').style.display = 'none';
+
+    const avisoESP = document.createElement('span');
+    avisoESP.className = 'pill demo';
+    avisoESP.textContent = 'Conectando ao ESP32...';
+
+    document.querySelector('.head-actions').prepend(avisoESP);
+
+    document.querySelector('.foot span').textContent =
+      'AutoStock - Dados do ESP32 via ThingSpeak';
+
+    document.querySelector(
+      '.history-panel .panel-head p'
+    ).textContent =
+      'Alteracoes detectadas enquanto este navegador acompanha a balanca';
+
+    async function atualizarESP32() {
+      try {
+        const resposta = await fetch('/api/estoque', {
+          cache: 'no-store'
+        });
+
+        if (!resposta.ok) {
+          throw new Error('API indisponivel');
+        }
+
+        const leitura = await resposta.json();
+        const quantidade = Number(leitura.quantidade);
+
+        if (!validInt(quantidade)) {
+          throw new Error('Quantidade invalida');
+        }
+
+        const momento = Date.parse(leitura.atualizadoEm);
+
+        if (!Number.isFinite(momento)) {
+          throw new Error('Data invalida');
+        }
+
+        if (
+          ultimaQuantidadeESP !== null &&
+          quantidade !== ultimaQuantidadeESP
+        ) {
+          const diferenca = quantidade - ultimaQuantidadeESP;
+
+          data.movements.unshift({
+            type: diferenca > 0 ? 'in' : 'out',
+            qty: Math.abs(diferenca),
+            balance: quantidade,
+            date: new Date(momento).toISOString(),
+            note: 'Variacao medida pela balanca'
+          });
+
+          data.movements = data.movements.slice(0, HISTORY_LIMIT);
+        }
+
+        ultimaQuantidadeESP = quantidade;
+        data.quantity = quantidade;
+
+        localStorage.setItem(
+          CHAVE_LIVE,
+          JSON.stringify({
+            quantity: data.quantity,
+            movements: data.movements
+          })
+        );
+
+        avisoESP.textContent =
+          Date.now() - momento > 120000
+            ? 'Leitura antiga do ESP32'
+            : 'ESP32 conectado - Estoque atualizado';
+
+        render();
+
+      } catch (erro) {
+        avisoESP.textContent = 'Sem atualizacao do ESP32';
+      }
+    }
+
     render();
+
+    if (ultimaQuantidadeESP === null) {
+      $('statStock').textContent = '—';
+      $('bigStock').textContent = '—';
+      $('chartQuantity').textContent = 'Aguardando leitura';
+    }
+
+    atualizarESP32();
+
+    setInterval(atualizarESP32, 20000);
+
   </script>
 </body>
 </html>
